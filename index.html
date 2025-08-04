@@ -319,7 +319,7 @@
 
             // Clear saved game when game is won or when starting a new game
             useEffect(() => {
-                if (gameState === 'won' || gameState === 'menu') {
+                if (gameState === 'won' ) { //|| gameState === 'menu'
                     StorageManager.clearSavedGame();
                     setSavedGame(null);
                 }
@@ -446,9 +446,10 @@
             const createPuzzle = (completeBoard, difficulty) => {
                 const puzzle = completeBoard.map(row => [...row]);
                 const difficultySettings = {
-                    easy: 40,
-                    medium: 50,
-                    hard: 60
+                    easy:35,
+                    medium: 40,
+                    hard: 50,
+                    expert: 60
                 };
                 
                 const cellsToRemove = difficultySettings[difficulty];
@@ -469,6 +470,11 @@
 
             // Start new game
             const startNewGame = (selectedDifficulty) => {
+                
+                // Explicitly clear any old game before starting a new one
+                StorageManager.clearSavedGame();
+                setSavedGame(null);
+
                 const completeBoard = generateCompleteBoard();
                 const puzzleBoard = createPuzzle(completeBoard, selectedDifficulty);
                 
@@ -851,7 +857,8 @@
                                 {[
                                     { level: 'easy', label: 'Easy', desc: 'Perfect for beginners', color: 'bg-green-500 hover:bg-green-600' },
                                     { level: 'medium', label: 'Medium', desc: 'Balanced challenge', color: 'bg-yellow-500 hover:bg-yellow-600' },
-                                    { level: 'hard', label: 'Hard', desc: 'For puzzle masters', color: 'bg-red-500 hover:bg-red-600' }
+                                    { level: 'hard', label: 'Hard', desc: 'For puzzle masters', color: 'bg-red-500 hover:bg-red-600' },
+                                    { level: 'expert', label: 'Expert', desc: 'A true test of skill', color: 'bg-purple-500 hover:bg-purple-600' }
                                 ].map(({ level, label, desc, color }) => {
                                     const levelBestTime = StorageManager.loadBestTimes()[level];
                                     return (
